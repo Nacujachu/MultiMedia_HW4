@@ -1,7 +1,7 @@
 clear all
 close all
 
-KaKdKs_Chooser = 4;
+KaKdKs_Chooser = 0;
 
 %% show the obj file at 3D figure
 al = fopen('al7KC.obj');
@@ -22,9 +22,9 @@ z_min = min(vertex_al(:,3));
 y_max = max(vertex_al(:,2));
 z_max = max(vertex_al(:,3));
 
-x_mid = (x_max+x_min)/2
-y_mid = (y_max+y_min)/2
-z_mid = (z_max+z_min)/2
+x_mid = (x_max+x_min)/2;
+y_mid = (y_max+y_min)/2;
+z_mid = (z_max+z_min)/2;
 
 shift = repmat([-x_mid -y_mid -z_mid],3618,1);
 vertex = vertex + shift;
@@ -36,8 +36,10 @@ vertex = vertex + shift;
 [Cfaces , Cverts , CvertColors, CtopVertIndex , CbotVertIndex] = DrawCy();
 C_v_shift = repmat([0,2.5,-2.5],122,1);
 C_f_shift = repmat([C_faces_offset C_faces_offset C_faces_offset] , 242,1);
+
 Cfaces = Cfaces + C_f_shift;
 Cverts = Cverts  + C_v_shift;
+
 faces = [ faces ; Cfaces ];
 vertex = [vertex ; Cverts];
 colors = [colors ; CvertColors];
@@ -56,5 +58,5 @@ else
 end
 Directional = 'infinite';
 Position = 'local';
-light('Position',[0.0,0.0,5.0],'Style',Directional);
+light('Position',[0.0,0.0,5.0], 'Style', Directional, 'Visible', 'on');
 lighting phong;

@@ -1,29 +1,14 @@
-%clear all; close all; clc;
-%%
+clear all
+load('ctrl100.mat');
+ctrlPointX = ctrlPointX.*4;
+ctrlPointY = ctrlPointY.*4;
+ctrlPointList = [ctrlPointX ctrlPointY];
+Mode = 'high'
 rbImage = im2double(imread('icon_back.png'));
 [h, w, ~] = size(rbImage);
-imshow(rbImage);
-
-Max_points = 100; %40 or 100
-curve_points = 0;
-Mode = 'High'
-if strcmp(Mode , 'low') == 1
-    curve_points = 6;
-else
-    curve_points = 101;
-end
-
-%% Mouse input
-xlabel ('Select at most 100 points along the outline', 'FontName', '微軟正黑體', 'FontSize', 14);
-%[ ctrlPointX, ctrlPointY ] = ginput(Max_points-1);
-%ctrlPointList = [ctrlPointX ctrlPointY];
-clickedN = size(ctrlPointList,1);
-
-promptStr = sprintf('%d points selected', clickedN);
-xlabel (promptStr, 'FontName', '微軟正黑體', 'FontSize', 14);
-
-%% Calculate Bazier Curve (Your efforts here)
-%outlineVertexList = ctrlPointList; %Enrich outlineVertexList
+rbImage = imresize(rbImage , 4 , 'nearest');
+Max_points = 100;
+curve_points = 101;
 outlineVertexList = []
 out_idx = 1;
 Low_Lod = 0 : 0.2 : 1
@@ -59,12 +44,8 @@ for j = 1 : curve_points
 end
 
 outlineVertexList = [outlineVertexList ; Px' Py'];
-size(outlineVertexList)
-
-size(ctrlPointList)
-
-
-%% Draw and fill the polygon  Last 3 input arguments: (ctrlPointScattered, polygonPlotted, filled)
-
+size(outlineVertexList);
+figure
+imshow(rbImage);
 figure; result = drawAndFillPolygon( rbImage, ctrlPointList, outlineVertexList, true, true, true );
 imwrite(result, 'result.png');
